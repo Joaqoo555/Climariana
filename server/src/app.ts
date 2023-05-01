@@ -7,6 +7,7 @@ import express,{ Express} from "express";
 import bodyParser from "body-parser"
 import cors from "cors"
 import morgan from "morgan"
+import indexRouter from "./routes";
 
 
 
@@ -19,8 +20,8 @@ server.use(express.json({limit: '25mb'}));
 server.use(bodyParser.json())
 server.use(helmet())
 
-
-// server.use()
+//Ruta index, middleware que junta todas las rutas para pasarla a 1
+server.use(indexRouter)
 
 
 
