@@ -5,7 +5,7 @@ import { IUser } from "../interfaces/user";
 export default (sequelize:any, DataTypes:any) => {
     class User extends Model<IUser> {
     // public encryptPassword = async (_newPass: string, _pass: string)=> {
-
+        //hola gabi
     // }
   }
   User.init({
