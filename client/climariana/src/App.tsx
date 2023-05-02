@@ -5,7 +5,7 @@ function App() {
 
   return (
     <>
-       
+       <h1>Hola desde la web</h1>
     </>
   )
 }
