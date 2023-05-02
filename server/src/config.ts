@@ -1,6 +1,9 @@
 import dotenv from "dotenv";
 import { Options } from "sequelize";
 dotenv.config();
+
+
+//Interface Configuration
 interface IConfig extends Options {
   db_deploy?: string;
 }
@@ -37,6 +40,7 @@ if (process.env.NODE_ENV === "production") {
     },
     native: false,
     logging: false,
+    
   };
 }
 
