@@ -5,7 +5,6 @@ import { IUser } from "../interfaces/user";
 export default (sequelize:any, DataTypes:any) => {
     class User extends Model<IUser> {
     // public encryptPassword = async (_newPass: string, _pass: string)=> {
-        //hola gabi
     // }
   }
   User.init({
@@ -35,11 +34,8 @@ export default (sequelize:any, DataTypes:any) => {
     newsLetter:{
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: true
       },
-    password:{
-        type: DataTypes.STRING,
-        allowNull: false,
-      }
   }, { sequelize, timestamps:true, tableName: "User" })
 return User
 }

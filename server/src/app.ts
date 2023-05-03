@@ -10,6 +10,11 @@ import morgan from "morgan";
 import indexRouter from "./routes";
 import { ErrorCatchEndware } from "./utils/ErrorCatching";
 import { headersConfigurations } from "./middlewares/HeaderMiddleware";
+import session from "express-session"
+import passport from "passport";
+require("./middlewares/GoogleMiddleware")
+
+
 
 const server: Express = express();
 
@@ -19,9 +24,20 @@ server.use(express.json({ limit: "25mb" }));
 server.use(bodyParser.json());
 server.use(helmet());
 server.use(headersConfigurations)
+
+server.set('trust proxy', 1) // trust first proxy
+
+server.use(session({
+  secret: 'mysecret',
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: true }
+}))
+server.use(passport.initialize())
+server.use(passport.session())
+
 //Ruta index, middleware que junta todas las rutas para pasarla a 1
 server.use(indexRouter);
-
 
 // Error catching endware.
 server.use(ErrorCatchEndware);

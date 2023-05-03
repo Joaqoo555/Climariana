@@ -1,11 +1,12 @@
 import server from "./app"
-import dotenv from "dotenv"
 import config from "./config"
 import db from "./db"
+import dotenv from "dotenv"
 dotenv.config()
 type TPort = string | number
 const port:TPort = process.env.PORT || 4000
 
+// Levantas el servidor
 server.listen(port, async ()=> {
     try {
       await db.sequelize.sync({ force: true });
