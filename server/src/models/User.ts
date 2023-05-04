@@ -1,22 +1,22 @@
 import { Model } from "sequelize";
 import { IUser } from "../interfaces/user";
 
-
-export default (sequelize:any, DataTypes:any) => {
-    class User extends Model<IUser> {
+export default (sequelize: any, DataTypes: any) => {
+  class User extends Model<IUser> {
     // public encryptPassword = async (_newPass: string, _pass: string)=> {
-        //hola gabi
     // }
+    static associate(_models: any) {}
   }
-  User.init({
-    id: {
+  User.init(
+    {
+      id: {
         type: DataTypes.UUID,
         //Una columna que almacena un identificador universal único. Usar con UUIDV1 o UUIDV4 para valores predeterminados.
         defaultValue: DataTypes.UUIDV4,
         //Un identificador universal único predeterminado generado siguiendo el estándar UUID v4
         primaryKey: true,
-    },
-    fullname:{
+      },
+      fullname: {
         type: DataTypes.STRING,
         allowNull: false,
         unique: true,
@@ -27,19 +27,40 @@ export default (sequelize:any, DataTypes:any) => {
           },
         },
       },
-    email:{
+      email: {
         type: DataTypes.STRING,
         unique: true,
         allowNull: false,
       },
-    newsLetter:{
+      newsLetter: {
         type: DataTypes.BOOLEAN,
         allowNull: false,
+        defaultValue: true,
       },
-    password:{
+      locality: {
+        type: DataTypes.ENUM(
+          "Neuquen",
+          "Plottier",
+          "Cipolletti",
+          "Centenario",
+          "Cinco Saltos"
+        ),
+        allowNull: true,
+      },
+      numberPhone: {
         type: DataTypes.STRING,
-        allowNull: false,
-      }
-  }, { sequelize, timestamps:true, tableName: "User" })
-return User
-}
+        allowNull: true,
+      },
+      number: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+      },
+      street: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+    },
+    { sequelize, timestamps: true, tableName: "User" }
+  );
+  return User;
+};
