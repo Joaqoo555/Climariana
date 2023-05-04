@@ -30,6 +30,7 @@ passport.use("auth-google",new GoogleStrategy({
           fullname: profile.displayName,
           email: profile.emails[0].value
         }
+        
       });
       return done(null, user);
     } catch (error) {
@@ -39,12 +40,21 @@ passport.use("auth-google",new GoogleStrategy({
   }
 ));
 
-passport.serializeUser((user, done)=> {
-    done(null, user)
-})
+passport.serializeUser((user: any, done) => {
+  return done(null, user.id); // guarda el ID del usuario en la sesión
+});
 
-passport.deserializeUser((user:any, done)=> {
+passport.deserializeUser(async (id: any, done) => {
+  try {
+    // Busca al usuario en la base de datos usando el ID
+    const user = await db.User.findByPk(id);
+    if (!user) {
+      return done(null, false);
+    }
+    return done(null, user);
+  } catch (error) {
+    return done(error);
+  }
+});
 
-    done(null, user)
-})
 

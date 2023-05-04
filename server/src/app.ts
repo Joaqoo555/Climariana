@@ -31,7 +31,7 @@ server.use(session({
   secret: 'mysecret',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false }
 }))
 server.use(passport.initialize())
 server.use(passport.session())

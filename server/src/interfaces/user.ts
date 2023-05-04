@@ -1,15 +1,12 @@
+type Tlocality = "Neuquen" | "Plottier" | "Cipolletti" | "Centenario" | "Cinco Saltos";
+
 export interface IUser {
-    id:string
+    id?:string
     fullname:string;
     email:string;
     newsLetter:boolean;
-}
-
-export interface ILogin {
-    email:string;
-}
-
-export interface ILogUp {
-    fullname:string;
-    email:string;
+    numberPhone?: string;
+    street?: string;
+    number?: number;
+    locality?:Tlocality;
 }

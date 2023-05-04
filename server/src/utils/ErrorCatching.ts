@@ -7,3 +7,12 @@ export const ErrorCatchEndware = (err: HttpError, _req: Request, res: Response, 
     const message = err.message || err;
     return res.status(status).send(message);
   }
+
+
+export const HandlerErrorResponse = (message:string, error: HttpError) => {
+  return {
+    status: error.statusCode,
+    message,
+    error
+  }
+}

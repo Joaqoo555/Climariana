@@ -1,4 +1,4 @@
-import { Router } from "express";
+import {  Router } from "express";
 import productRouter from "./product.routes";
 import userRouter from "./user.routes";
 import passport from "passport";
@@ -14,11 +14,11 @@ indexRouter.use(
     ],
     session: false,
     //TODO usar las variables de entorno
+    //http://localhost:3000/home
     
-    successRedirect: "/http://localhost:3000/home",
+    successRedirect: "http://localhost:3000/home",
     failureRedirect: "http://localhost:3000/google/error",
-  })
-);
+  }));
 
 indexRouter.use("/products", productRouter);
 indexRouter.use("/users", userRouter);
