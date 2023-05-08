@@ -6,8 +6,11 @@ export default (sequelize:any, DataTypes:any) => {
     class Product extends Model<IProduct> {
     // public encryptPassword = async (_newPass: string, _pass: string)=> {
     // }
-    static associate(_models: any) {
-        
+    static associate(models: any) {
+        Product.belongsToMany(models.Order, {
+            through: "OrderProduct",
+            foreignKey: 'id_product',
+          });
     }
   }
   Product.init({

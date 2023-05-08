@@ -2,6 +2,7 @@ import {  Router } from "express";
 import productRouter from "./product.routes";
 import userRouter from "./user.routes";
 import passport from "passport";
+import orderRouter from "./oreder.routes";
 
 const indexRouter = Router();
 
@@ -22,5 +23,6 @@ indexRouter.use(
 
 indexRouter.use("/products", productRouter);
 indexRouter.use("/users", userRouter);
+indexRouter.use("/orders", orderRouter);
 
 export default indexRouter;

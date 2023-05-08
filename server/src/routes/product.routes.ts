@@ -1,12 +1,18 @@
 import { Router } from "express";
-import { createProduct, getAllProducts } from "../controllers/product.controller";
+import {
+  createProduct,
+  deleteProduct,
+  getAllProducts,
+  updateProduct,
+} from "../controllers/product.controller";
 
 const productRouter = Router();
 
 // Path =>  /products
 productRouter.get("/", getAllProducts);
- productRouter.post("/", createProduct)
 
-
+productRouter.put("/", updateProduct);
+productRouter.post("/", createProduct);
+productRouter.delete("/", deleteProduct);
 
 export default productRouter;

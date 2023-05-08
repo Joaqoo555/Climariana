@@ -3,9 +3,13 @@ import { IUser } from "../interfaces/user";
 
 export default (sequelize: any, DataTypes: any) => {
   class User extends Model<IUser> {
-    // public encryptPassword = async (_newPass: string, _pass: string)=> {
-    // }
-    static associate(_models: any) {}
+
+    static associate(models: any) {
+      User.hasMany(models.Order, {
+        foreignKey: 'id_user',
+      });
+    }
+    
   }
   User.init(
     {
