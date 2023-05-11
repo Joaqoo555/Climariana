@@ -44,6 +44,11 @@ export default (sequelize: any, DataTypes: any) => {
         type: DataTypes.ENUM("cart", "approved"),
         allowNull: false,
       },
+      quantity: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0
+      },
     },
     { sequelize, timestamps: true, tableName: "Order" }
   );

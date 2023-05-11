@@ -2,13 +2,15 @@ import { Request, Response } from "express";
 import { HandlerErrorResponse } from "../utils/ErrorCatching";
 import db from "../db";
 import { Op } from "sequelize";
+import { IBodyPostOrder, IQueryGetOrderByUser } from "../interfaces/orders";
 
 export const getAllOrders = async (_req: Request, res: Response) => {
   try {
     const orders = await db.Order.findAll({
       include: {
         model: db.Product,
-        through: { attributes: [] }
+        through: { attributes: [] },
+        attributes: ["id", "title", "price"], // here you can select the atributes of the model "Product"
       }
     })
     return res.send(orders)
@@ -17,18 +19,18 @@ export const getAllOrders = async (_req: Request, res: Response) => {
   }
 };
 
-export const getOrderByUser = async (req: Request, res: Response) => {
+export const getOrderByUser = async (req: Request<{},{},{},IQueryGetOrderByUser>, res: Response) => {
   try {
-    const { id_user } = req.query;
+    const { id_user, status } = req.query;
     const orderUser = await db.Order.findAll({
       where: {
         id_user,
-        status: { [Op.ne]: "cart" },
+        status: { [Op.ne]: status },
       },
       include: [
         {
           model: db.User,
-          attributes: ["id", "name", "email"], // Aquí puedes seleccionar qué campos del modelo User quieres incluir
+          attributes: ["id", "name", "email"], // here you can select the atributes of the model "Product"
         },
       ],
     });
@@ -38,22 +40,24 @@ export const getOrderByUser = async (req: Request, res: Response) => {
   }
 };
 
-export const createOrder = async (req: Request, res: Response) => {
+export const createOrder = async (req: Request<{},{},IBodyPostOrder>, res: Response) => {
   try {
           const { id_user } = req.query;
-          const id_products = req.body
-          
-          if (!id_products || id_products.length === 0) {
-            return res.status(404).json({ error: 'El carrito está vacío.' });
+          const orderInfo = req.body
+          if(id_user) throw new Error("No se ingreso un usuario correcto")
+          //Verificamos que posea productos en La orden que se envia desde el frontEnd
+          for (let i = 0; i < orderInfo.Products.length; i++) {
+            if (!orderInfo.Products[i] || orderInfo.Products.length === 0) {
+              throw new Error("No se encuentran productos en el carrito")
+            } 
           }
+          //queantity se calcula desde el front pra mostrar el valor en vivo del carrito por medio de un setState
           const newOrder = await db.Order.create({
-            id_user,
-            status: 'cart',
-            mode:"envio"
+           ...orderInfo, id_user
           });
 
-          await newOrder.addProduct(id_products)
-            
+          const PRODUCTS_ID =  orderInfo.Products.map((product_id)=> product_id)
+          await newOrder.addProduct(PRODUCTS_ID)
           return res.status(201).json({ message: 'La orden se creó exitosamente.' });
       
   } catch (error: any) {
@@ -68,6 +72,7 @@ export const deleteOrderById = async (_req: Request, res: Response) => {
   }
 };
 
+//TODO Cuando se actualiza al estado de compra realizada, se deberia de restar el stock del producto
 export const updateOrderStatus = async (_req: Request, res: Response) => {
   try {
   } catch (error: any) {

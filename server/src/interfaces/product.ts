@@ -10,3 +10,9 @@ export interface IPostProduct {
 export interface IProduct extends IPostProduct{
     id:string;
 }
+
+export interface IProductInOrder {
+    id:string;
+    title?:string;
+    price?:number;
+}

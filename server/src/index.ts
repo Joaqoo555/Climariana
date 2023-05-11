@@ -9,7 +9,7 @@ const port:TPort = process.env.PORT || 4000
 // Levantas el servidor
 server.listen(port, async ()=> {
     try {
-      await db.sequelize.sync({ force: true });
+      await db.sequelize.sync({ alter: true });
       await db.sequelize.authenticate()
         console.log(`Connection has been established successfully in the database ${config.database}`);
         console.log(`Listen on port ${port}`)
