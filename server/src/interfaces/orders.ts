@@ -6,7 +6,7 @@ type TMode = "retiro" | "envio"
 //req.query of the function => Get Order By User
 export interface IQueryGetOrderByUser {
     id_user: string;
-    status: TStatus;
+    status: TStatus | undefined;
 }
 
 //req.body of the function => create Order

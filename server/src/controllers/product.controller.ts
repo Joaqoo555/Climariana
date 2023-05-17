@@ -15,7 +15,7 @@ export const getAllProducts = async (req: Request, res: Response) => {
       return res.send(products);
     }
   } catch (error: any) {
-    return res.status(404).send(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 404);
   }
 };
 
@@ -26,9 +26,9 @@ export const createProduct = async (
   try {
     const newProduct = req.body;
     const productCreated = await db.Product.create(newProduct);
-    res.status(201).send({ message: "Product Created", productCreated });
+    return res.status(201).send({ message: "Product Created", productCreated });
   } catch (error: any) {
-    res.status(404).json(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 404);
   }
 };
 
@@ -46,7 +46,7 @@ export const deleteProduct = async (req: Request, res: Response) => {
       throw new Error("No se ingreso el Producto a eliminar");
     }
   } catch (error: any) {
-    return res.status(404).json(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 404);
   }
 };
 
@@ -68,6 +68,6 @@ export const updateProduct = async (req: Request, res: Response) => {
     }
     return res.status(200).json(affectedRows[0]);
   } catch (error: any) {
-    return res.status(404).json(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 404);
   }
 };

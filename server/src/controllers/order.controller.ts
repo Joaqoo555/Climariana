@@ -1,8 +1,8 @@
 import { Request, Response } from "express";
 import { HandlerErrorResponse } from "../utils/ErrorCatching";
 import db from "../db";
-import { Op } from "sequelize";
 import { IBodyPostOrder, IQueryGetOrderByUser } from "../interfaces/orders";
+import { findOrderStatusCart } from "../middlewares/FindOrderStatusCart";
 
 export const getAllOrders = async (_req: Request, res: Response) => {
   try {
@@ -15,28 +15,17 @@ export const getAllOrders = async (_req: Request, res: Response) => {
     })
     return res.send(orders)
   } catch (error: any) {
-    return res.status(500).json(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 500)
   }
 };
 
 export const getOrderByUser = async (req: Request<{},{},{},IQueryGetOrderByUser>, res: Response) => {
   try {
     const { id_user, status } = req.query;
-    const orderUser = await db.Order.findAll({
-      where: {
-        id_user,
-        status: { [Op.ne]: status },
-      },
-      include: [
-        {
-          model: db.User,
-          attributes: ["id", "name", "email"], // here you can select the atributes of the model "Product"
-        },
-      ],
-    });
-    return res.status(200).send(orderUser)
+    const ordersOfUser = await findOrderStatusCart(id_user, status, res)
+    return res.status(200).send(ordersOfUser)
   } catch (error: any) {
-    return res.status(500).json(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 500);
   }
 };
 
@@ -61,14 +50,14 @@ export const createOrder = async (req: Request<{},{},IBodyPostOrder>, res: Respo
           return res.status(201).json({ message: 'La orden se creó exitosamente.' });
       
   } catch (error: any) {
-    return res.status(500).json(HandlerErrorResponse(error.message, error));
+    return HandlerErrorResponse(res, error.message, error, 500)
   }
 };
 
 export const deleteOrderById = async (_req: Request, res: Response) => {
   try {
   } catch (error: any) {
-    res.status(500).json(HandlerErrorResponse(error.message, error));
+     HandlerErrorResponse(res, error.message, error, 500)
   }
 };
 
@@ -76,6 +65,6 @@ export const deleteOrderById = async (_req: Request, res: Response) => {
 export const updateOrderStatus = async (_req: Request, res: Response) => {
   try {
   } catch (error: any) {
-    res.status(500).json(HandlerErrorResponse(error.message, error));
+     HandlerErrorResponse(res, error.message, error, 500)
   }
 };

@@ -9,10 +9,12 @@ export const ErrorCatchEndware = (err: HttpError, _req: Request, res: Response, 
   }
 
 
-export const HandlerErrorResponse = (message:string, error: HttpError) => {
-  return {
-    status: error.statusCode,
-    message,
-    error
+export const HandlerErrorResponse = (res: Response, message:string, error: HttpError, status:number) => {
+  const errorJson = {
+      status: error.statusCode || status,
+      message,
+      error
   }
+  return res.status(status).json(errorJson);
+
 }
