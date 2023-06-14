@@ -6,6 +6,7 @@ import orderRouter from "./oreder.routes";
 
 const indexRouter = Router();
 
+indexRouter.use("/users", userRouter);
 indexRouter.use(
   "/auth",
   passport.authenticate("auth-google", {
@@ -22,7 +23,6 @@ indexRouter.use(
   }));
 
 indexRouter.use("/products", productRouter);
-indexRouter.use("/users", userRouter);
 indexRouter.use("/orders", orderRouter);
 
 export default indexRouter;

@@ -9,10 +9,10 @@ import cors from "cors";
 import morgan from "morgan";
 import indexRouter from "./routes";
 import { ErrorCatchEndware } from "./utils/ErrorCatching";
-import { headersConfigurations } from "./middlewares/HeaderMiddleware";
+// import { headersConfigurations } from "./middlewares/HeaderMiddleware";
 import session from "express-session"
 import passport from "passport";
-require("./middlewares/GoogleMiddleware")
+
 
 
 
@@ -23,16 +23,19 @@ server.use(morgan("dev"));
 server.use(express.json({ limit: "25mb" }));
 server.use(bodyParser.json());
 server.use(helmet());
-server.use(headersConfigurations)
+// server.use(headersConfigurations)
 
 server.set('trust proxy', 1) // trust first proxy
 
 server.use(session({
-  secret: 'mysecret',
-  resave: false,
+  secret: '123',
+  resave: true,
   saveUninitialized: true,
-  cookie: { secure: false }
+  cookie: { secure: false, maxAge: 6000 },
+  
 }))
+
+require("./middlewares/GoogleMiddleware")
 server.use(passport.initialize())
 server.use(passport.session())
 

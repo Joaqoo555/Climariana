@@ -10,3 +10,8 @@ export interface IUser {
     number?: number;
     locality?:Tlocality;
 }
+
+export interface IUserSession extends IUser {
+    createdAt?: string;
+    updatedAt?: string
+}
